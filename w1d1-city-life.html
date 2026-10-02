@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>W1D1 — City Life</title>
+<script src="config.js"></script>
+<style>
+:root{
+  --ink:#17324d;--accent:#244f73;--soft:#eef4f8;--ok:#2f6d55;--warn:#9a6a1a;
+  --muted:#66788a;--line:#dce5ed;--bg:#f6f8fb;--card:#fff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#243340;line-height:1.5}
+header{position:sticky;top:0;z-index:5;background:rgba(246,248,251,.94);backdrop-filter:blur(9px);border-bottom:1px solid var(--line)}
+.top{max-width:920px;margin:auto;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;gap:14px}
+.brand{font-weight:800;color:var(--ink)}
+.timer{font-variant-numeric:tabular-nums;color:var(--muted)}
+main{max-width:920px;margin:auto;padding:26px 20px 70px}
+.hero,.section,.finish{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:0 7px 28px rgba(20,45,70,.05)}
+.hero{margin-bottom:18px}
+h1{margin:0 0 8px;color:var(--ink)}
+h2{margin:0 0 8px;color:var(--ink);font-size:22px}
+p.lead{color:var(--muted);margin-top:0}
+.progress{height:9px;background:#e8eef3;border-radius:99px;overflow:hidden;margin-top:18px}
+.progress>div{height:100%;background:var(--accent);width:0%;transition:width .25s}
+.section{margin-top:18px}
+.section.locked{opacity:.48;pointer-events:none;filter:grayscale(.2)}
+.q{padding:18px 0;border-top:1px solid #edf1f4}
+.q:first-of-type{border-top:0}
+.prompt{font-weight:650;margin-bottom:9px}
+label.small{display:block;font-size:13px;color:var(--muted);margin:8px 0 4px}
+input[type=text],textarea,select{
+  width:100%;padding:12px 13px;border:1px solid #cfdbe5;border-radius:11px;
+  font:inherit;background:#fff;color:#22313f
+}
+textarea{min-height:90px;resize:vertical}
+.reason{min-height:68px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{
+  border:0;border-radius:11px;padding:11px 15px;font:inherit;font-weight:750;cursor:pointer;
+  background:var(--accent);color:white
+}
+button.secondary{background:#edf3f7;color:var(--ink)}
+button.hint{background:#fff3d8;color:#74500f;border:1px solid #ead39b;padding:8px 11px;font-size:14px}
+.hintbox{display:none;margin-top:8px;padding:10px 12px;background:#fff8e8;border-left:3px solid #c18a24;border-radius:8px;color:#654b1b}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.status{font-size:14px;color:var(--muted)}
+.saved{color:var(--ok);font-weight:700}
+.notice{padding:12px 14px;background:var(--soft);border-radius:10px;color:#35516b}
+.speaking{padding:16px;background:#f8fbfd;border:1px dashed #b8cbd9;border-radius:13px}
+#speakClock{font-size:28px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.finish{margin-top:18px}
+.finish h2{margin-bottom:8px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.metric{background:#f8fafc;border:1px solid #e4ebf0;border-radius:12px;padding:12px;text-align:center}
+.metric strong{display:block;font-size:20px;color:var(--ink)}
+@media(max-width:680px){.row,.grid3{grid-template-columns:1fr}.top{align-items:flex-start}.hero,.section,.finish{padding:20px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div>
+      <div class="brand">English Upgrade · W1D1</div>
+      <div class="status"><span id="saveState">Ready</span></div>
+    </div>
+    <div class="timer">Time: <strong id="elapsed">00:00</strong></div>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <h1>City Life — Control Your English</h1>
+  <p class="lead">Goal: turn English you already recognise into English you can use accurately.</p>
+  <div class="notice"><strong>Rule:</strong> Do not use a dictionary or your old worksheet unless a task tells you to.</div>
+  <div class="progress"><div id="bar"></div></div>
+</section>
+
+<section class="section" id="sec1" data-step="1">
+  <h2>1 · Quick Recall</h2>
+  <p class="lead">Complete the expressions from memory.</p>
+
+  <div class="q" data-qid="R1" data-skill="phrasal_verbs">
+    <div class="prompt">1. hang ______ my friends</div>
+    <input type="text" name="R1" autocomplete="off">
+  </div>
+  <div class="q" data-qid="R2" data-skill="phrasal_verbs">
+    <div class="prompt">2. come ______ with a cold</div>
+    <input type="text" name="R2" autocomplete="off">
+  </div>
+  <div class="q" data-qid="R3" data-skill="phrasal_verbs">
+    <div class="prompt">3. get ______ the city</div>
+    <input type="text" name="R3" autocomplete="off">
+  </div>
+  <div class="q" data-qid="R4" data-skill="phrasal_verbs">
+    <div class="prompt">4. carry ______ an experiment</div>
+    <input type="text" name="R4" autocomplete="off">
+  </div>
+  <div class="q" data-qid="R5" data-skill="phrasal_verbs">
+    <div class="prompt">5. throw ______ rubbish</div>
+    <input type="text" name="R5" autocomplete="off">
+  </div>
+
+  <div class="q" data-qid="R6" data-skill="transfer">
+    <div class="prompt">Which TWO expressions above could you naturally use when talking about city life? Write them.</div>
+    <textarea name="R6"></textarea>
+  </div>
+  <div class="actions">
+    <button onclick="completeSection(1)">Complete Step 1</button>
+  </div>
+</section>
+
+<section class="section locked" id="sec2" data-step="2">
+  <h2>2 · Error Detective</h2>
+  <p class="lead">Correct each sentence. Then explain what was wrong. Do not just rewrite it.</p>
+
+  <div class="q" data-qid="E1" data-skill="s_v_agreement">
+    <div class="prompt">1. Sylvie hang out with her classmates after school.</div>
+    <button class="hint" type="button" onclick="showHint(this,'Look at the subject. Is it I/you/we/they or he/she/it?')">Hint</button>
+    <div class="hintbox"></div>
+    <label class="small">Your correction</label><textarea name="E1"></textarea>
+    <label class="small">Why?</label><textarea class="reason" name="E1_reason"></textarea>
+  </div>
+
+  <div class="q" data-qid="E2" data-skill="articles">
+    <div class="prompt">2. David has come down with cold.</div>
+    <button class="hint" type="button" onclick="showHint(this,'Think about whether the countable illness noun needs a determiner.')">Hint</button>
+    <div class="hintbox"></div>
+    <label class="small">Your correction</label><textarea name="E2"></textarea>
+    <label class="small">Why?</label><textarea class="reason" name="E2_reason"></textarea>
+  </div>
+
+  <div class="q" data-qid="E3" data-skill="articles_prepositions">
+    <div class="prompt">3. It is easy to get around city by bike.</div>
+    <button class="hint" type="button" onclick="showHint(this,'Check the noun phrase after “around”.')">Hint</button>
+    <div class="hintbox"></div>
+    <label class="small">Your correction</label><textarea name="E3"></textarea>
+    <label class="small">Why?</label><textarea class="reason" name="E3_reason"></textarea>
+  </div>
+
+  <div class="q" data-qid="E4" data-skill="verb_form">
+    <div class="prompt">4. The scientists will carries out an experiment tomorrow.</div>
+    <button class="hint" type="button" onclick="showHint(this,'What form of the verb comes after “will”?')">Hint</button>
+    <div class="hintbox"></div>
+    <label class="small">Your correction</label><textarea name="E4"></textarea>
+    <label class="small">Why?</label><textarea class="reason" name="E4_reason"></textarea>
+  </div>
+
+  <div class="q" data-qid="E5" data-skill="modal_verb">
+    <div class="prompt">5. People shouldn’t throws away rubbish in the streets.</div>
+    <button class="hint" type="button" onclick="showHint(this,'Check the verb form after a modal verb.')">Hint</button>
+    <div class="hintbox"></div>
+    <label class="small">Your correction</label><textarea name="E5"></textarea>
+    <label class="small">Why?</label><textarea class="reason" name="E5_reason"></textarea>
+  </div>
+
+  <div class="q" data-qid="E6" data-skill="phrasal_pronoun_order">
+    <div class="prompt">6. My father will pick up me after school.</div>
+    <button class="hint" type="button" onclick="showHint(this,'With some separable phrasal verbs, where does a pronoun go?')">Hint</button>
+    <div class="hintbox"></div>
+    <label class="small">Your correction</label><textarea name="E6"></textarea>
+    <label class="small">Why?</label><textarea class="reason" name="E6_reason"></textarea>
+  </div>
+
+  <div class="actions"><button onclick="completeSection(2)">Complete Step 2</button></div>
+</section>
+
+<section class="section locked" id="sec3" data-step="3">
+  <h2>3 · Build the Sentence</h2>
+  <p class="lead">Use all the ideas. Write a natural, complete sentence.</p>
+
+  <div class="q" data-qid="B1" data-skill="city_collocations">
+    <div class="prompt">1. rush hour · traffic congestion · city centre</div>
+    <textarea name="B1"></textarea>
+  </div>
+  <div class="q" data-qid="B2" data-skill="city_collocations">
+    <div class="prompt">2. public transport · get around · easily</div>
+    <textarea name="B2"></textarea>
+  </div>
+  <div class="q" data-qid="B3" data-skill="sentence_building">
+    <div class="prompt">3. people · throw away · rubbish · streets</div>
+    <textarea name="B3"></textarea>
+  </div>
+  <div class="q" data-qid="B4" data-skill="sentence_building">
+    <div class="prompt">4. my friends · hang out · weekend</div>
+    <textarea name="B4"></textarea>
+  </div>
+  <div class="q" data-qid="B5" data-skill="sentence_building">
+    <div class="prompt">5. air pollution · city life · problem</div>
+    <textarea name="B5"></textarea>
+  </div>
+
+  <div class="notice">
+    Before moving on, check each sentence: <strong>Subject + Verb · Tense · Article/Preposition · Natural meaning.</strong>
+  </div>
+  <div class="actions"><button onclick="completeSection(3)">Complete Step 3</button></div>
+</section>
+
+<section class="section locked" id="sec4" data-step="4">
+  <h2>4 · 45-second City Challenge</h2>
+  <p class="lead">Speak first. Do not write a full script.</p>
+  <div class="speaking">
+    <div class="prompt">What is one problem with city life, and what should be done about it?</div>
+    <p>Try to use at least 3: <strong>rush hour · traffic congestion · public transport · get around · city centre · traffic safety</strong></p>
+    <div id="speakClock">00:45</div>
+    <div class="actions">
+      <button type="button" onclick="startSpeaking()">Start 45s</button>
+      <button type="button" class="secondary" onclick="resetSpeaking()">Reset</button>
+    </div>
+  </div>
+
+  <div class="q" data-qid="S1" data-skill="speaking_reflection">
+    <div class="prompt">After speaking, write ONE sentence you said that you were least sure about.</div>
+    <textarea name="S1"></textarea>
+  </div>
+
+  <div class="q" data-qid="S2" data-skill="speaking_selfcheck">
+    <div class="prompt">How many target expressions did you use?</div>
+    <select name="S2">
+      <option value="">Choose...</option><option>0</option><option>1</option><option>2</option><option>3</option><option>4+</option>
+    </select>
+  </div>
+  <div class="q" data-qid="S3" data-skill="speaking_selfcheck">
+    <div class="prompt">Did you speak in complete sentences most of the time?</div>
+    <select name="S3">
+      <option value="">Choose...</option><option>Yes</option><option>Mostly</option><option>Not yet</option>
+    </select>
+  </div>
+
+  <div class="actions"><button onclick="completeSection(4)">Complete Step 4</button></div>
+</section>
+
+<section class="section locked" id="sec5" data-step="5">
+  <h2>5 · Exit Check</h2>
+  <p class="lead">No notes. Show what you can produce independently.</p>
+
+  <div class="q" data-qid="X1" data-skill="phrasal_verbs">
+    <div class="prompt">1. Write one sentence with <em>come down with</em>.</div>
+    <textarea name="X1"></textarea>
+  </div>
+  <div class="q" data-qid="X2" data-skill="phrasal_verbs">
+    <div class="prompt">2. Write one sentence with <em>get around</em>.</div>
+    <textarea name="X2"></textarea>
+  </div>
+  <div class="q" data-qid="X3" data-skill="s_v_agreement">
+    <div class="prompt">3. Correct: My sister hang out with her friends every Sunday.</div>
+    <textarea name="X3"></textarea>
+  </div>
+  <div class="q" data-qid="X4" data-skill="reflection">
+    <div class="prompt">4. What was most difficult today?</div>
+    <select name="X4">
+      <option value="">Choose...</option>
+      <option>Vocabulary</option><option>Grammar</option><option>Making sentences</option>
+      <option>Speaking</option><option>Pronunciation</option>
+    </select>
+  </div>
+  <div class="q" data-qid="X5" data-skill="reflection">
+    <div class="prompt">5. In one sentence: what did you learn or notice today?</div>
+    <textarea name="X5"></textarea>
+  </div>
+  <div class="q" data-qid="X6" data-skill="reflection">
+    <div class="prompt">6. How confident do you feel after this lesson?</div>
+    <select name="X6">
+      <option value="">Choose...</option><option value="1">1 — Not confident yet</option><option value="2">2</option>
+      <option value="3">3 — Okay</option><option value="4">4</option><option value="5">5 — Very confident</option>
+    </select>
+  </div>
+
+  <div class="actions"><button onclick="completeSection(5)">Complete Step 5</button></div>
+</section>
+
+<section class="finish locked" id="finishBox">
+  <h2>Finish Lesson</h2>
+  <p class="lead">Your work has been autosaved on this browser. Finishing will also try to send a copy to the learning Google Sheet.</p>
+  <div class="grid3">
+    <div class="metric"><strong id="mTime">—</strong><span>time</span></div>
+    <div class="metric"><strong id="mHints">0</strong><span>hints</span></div>
+    <div class="metric"><strong id="mEdits">0</strong><span>edits</span></div>
+  </div>
+  <div class="actions">
+    <button id="finishBtn" onclick="finishLesson()">Finish & Save to Google Sheet</button>
+    <button class="secondary" onclick="downloadJSON()">Export backup (.json)</button>
+  </div>
+  <p id="submitMsg" class="status"></p>
+</section>
+</main>
+
+<script>
+const LESSON = {
+  id: "W1D1",
+  title: "City Life — Control Your English",
+  version: (window.APP_CONFIG && APP_CONFIG.SITE_VERSION) || "v1.0"
+};
+const STUDENT_ID = (window.APP_CONFIG && APP_CONFIG.STUDENT_ID) || "S01";
+const WEB_APP_URL = (window.APP_CONFIG && APP_CONFIG.WEB_APP_URL) || "";
+const STORAGE_KEY = `english-upgrade:${STUDENT_ID}:${LESSON.id}`;
+const TOTAL_STEPS = 5;
+
+let data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null") || {
+  submission_id: (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`),
+  student_id: STUDENT_ID,
+  lesson_id: LESSON.id,
+  lesson_title: LESSON.title,
+  source_version: LESSON.version,
+  started_at: new Date().toISOString(),
+  finished_at: "",
+  completed_steps: 0,
+  hints_used: 0,
+  edits_count: 0,
+  speaking_started: false,
+  answers: {},
+  meta: {}
+};
+
+function save(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  const el=document.getElementById("saveState");
+  el.textContent="Saved ✓"; el.className="saved";
+  setTimeout(()=>{el.textContent="Autosave on";el.className="status"},700);
+}
+
+function promptText(q){
+  return (q.querySelector(".prompt")?.innerText || "").trim();
+}
+
+function init(){
+  document.querySelectorAll("input[type=text], textarea, select").forEach(el=>{
+    const name=el.name;
+    if(data.answers[name]?.final_answer !== undefined) el.value=data.answers[name].final_answer;
+    el.addEventListener("focus", ()=>{
+      if(!data.meta[name]) data.meta[name]={first_focus:new Date().toISOString(),revisions:0};
+    });
+    el.addEventListener("input", ()=>{
+      const q=el.closest(".q");
+      const val=el.value;
+      const rec=data.answers[name] || {
+        qid:q?.dataset.qid || name,
+        section:q?.closest(".section")?.dataset.step || "",
+        skill:q?.dataset.skill || "",
+        prompt:promptText(q),
+        first_answer:"",
+        final_answer:"",
+        revisions:0,
+        hint_count:0
+      };
+      if(!rec.first_answer && val.trim()) rec.first_answer=val;
+      if(rec.final_answer !== val && rec.final_answer !== "") {
+        rec.revisions=(rec.revisions||0)+1;
+        data.edits_count++;
+      }
+      rec.final_answer=val;
+      data.answers[name]=rec;
+      save();
+    });
+  });
+
+  restoreHints();
+  unlockTo(data.completed_steps + 1);
+  updateProgress();
+  tick();
+  setInterval(tick,1000);
+}
+
+function restoreHints(){
+  document.querySelectorAll(".q").forEach(q=>{
+    const qid=q.dataset.qid;
+    const used=Object.values(data.answers).some(a=>a.qid===qid && (a.hint_count||0)>0);
+    if(used){
+      const box=q.querySelector(".hintbox");
+      if(box) box.style.display="block";
+    }
+  });
+}
+
+function showHint(btn, text){
+  const q=btn.closest(".q");
+  const box=q.querySelector(".hintbox");
+  box.textContent=text; box.style.display="block";
+  const qid=q.dataset.qid;
+  let found=false;
+  Object.keys(data.answers).forEach(k=>{
+    if(data.answers[k].qid===qid){data.answers[k].hint_count=(data.answers[k].hint_count||0)+1;found=true;}
+  });
+  if(!found){
+    const name=q.querySelector("input,textarea,select")?.name || qid;
+    data.answers[name]={
+      qid,section:q.closest(".section")?.dataset.step||"",skill:q.dataset.skill||"",
+      prompt:promptText(q),first_answer:"",final_answer:"",revisions:0,hint_count:1
+    };
+  }
+  data.hints_used++;
+  document.getElementById("mHints").textContent=data.hints_used;
+  save();
+}
+
+function sectionFilled(n){
+  const sec=document.getElementById(`sec${n}`);
+  const fields=[...sec.querySelectorAll("input[type=text],textarea,select")];
+  const missing=fields.filter(x=>!String(x.value).trim());
+  missing.forEach(x=>x.style.borderColor="#b66a5a");
+  setTimeout(()=>missing.forEach(x=>x.style.borderColor=""),1200);
+  return missing.length===0;
+}
+
+function completeSection(n){
+  if(!sectionFilled(n)){
+    alert("Please complete every answer in this step before moving on.");
+    return;
+  }
+  data.completed_steps=Math.max(data.completed_steps,n);
+  save();
+  unlockTo(n+1);
+  updateProgress();
+  const next = n<TOTAL_STEPS ? document.getElementById(`sec${n+1}`) : document.getElementById("finishBox");
+  next?.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function unlockTo(step){
+  for(let i=1;i<=TOTAL_STEPS;i++){
+    const sec=document.getElementById(`sec${i}`);
+    if(i<=step) sec.classList.remove("locked");
+    else sec.classList.add("locked");
+  }
+  const finish=document.getElementById("finishBox");
+  if(data.completed_steps>=TOTAL_STEPS) finish.classList.remove("locked"); else finish.classList.add("locked");
+}
+
+function updateProgress(){
+  document.getElementById("bar").style.width=`${Math.min(100,(data.completed_steps/TOTAL_STEPS)*100)}%`;
+}
+
+function secondsElapsed(){
+  const end=data.finished_at ? new Date(data.finished_at) : new Date();
+  return Math.max(0,Math.round((end-new Date(data.started_at))/1000));
+}
+function fmt(sec){
+  const m=Math.floor(sec/60), s=sec%60;
+  return `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+function tick(){
+  const t=fmt(secondsElapsed());
+  document.getElementById("elapsed").textContent=t;
+  document.getElementById("mTime").textContent=t;
+  document.getElementById("mHints").textContent=data.hints_used||0;
+  document.getElementById("mEdits").textContent=data.edits_count||0;
+}
+
+let speakTimer=null, speakLeft=45;
+function startSpeaking(){
+  if(speakTimer) return;
+  data.speaking_started=true; save();
+  speakTimer=setInterval(()=>{
+    speakLeft--;
+    document.getElementById("speakClock").textContent=`00:${String(Math.max(0,speakLeft)).padStart(2,"0")}`;
+    if(speakLeft<=0){clearInterval(speakTimer);speakTimer=null;alert("45 seconds finished.");}
+  },1000);
+}
+function resetSpeaking(){
+  if(speakTimer){clearInterval(speakTimer);speakTimer=null;}
+  speakLeft=45;document.getElementById("speakClock").textContent="00:45";
+}
+
+function answerRows(){
+  return Object.entries(data.answers).map(([name,a])=>{
+    const meta=data.meta[name]||{};
+    let responseSec="";
+    if(meta.first_focus){
+      responseSec=Math.max(0,Math.round((new Date(data.finished_at||new Date())-new Date(meta.first_focus))/1000));
+    }
+    return {
+      name,
+      qid:a.qid||name,
+      section:a.section||"",
+      skill:a.skill||"",
+      prompt:a.prompt||"",
+      first_answer:a.first_answer||"",
+      final_answer:a.final_answer||"",
+      attempts:(a.revisions||0)+1,
+      revisions:a.revisions||0,
+      hint_used:(a.hint_count||0)>0,
+      hint_count:a.hint_count||0,
+      response_time_sec:responseSec,
+      self_check:"",
+      system_feedback:""
+    };
+  });
+}
+
+function buildPayload(){
+  const difficulty=document.querySelector('[name="X4"]')?.value||"";
+  const confidence=document.querySelector('[name="X6"]')?.value||"";
+  const reflection=document.querySelector('[name="X5"]')?.value||"";
+  return {
+    submission_id:data.submission_id,
+    timestamp:new Date().toISOString(),
+    student_id:data.student_id,
+    lesson_id:data.lesson_id,
+    lesson_title:data.lesson_title,
+    started_at:data.started_at,
+    finished_at:data.finished_at||new Date().toISOString(),
+    duration_sec:secondsElapsed(),
+    completion_pct:Math.round((data.completed_steps/TOTAL_STEPS)*100),
+    hints_used:data.hints_used||0,
+    edits_count:data.edits_count||0,
+    self_difficulty:difficulty,
+    self_confidence:confidence,
+    reflection,
+    source_version:data.source_version,
+    answers:answerRows()
+  };
+}
+
+async function finishLesson(){
+  if(data.completed_steps<TOTAL_STEPS){alert("Please complete all five steps first.");return;}
+  if(!data.finished_at){data.finished_at=new Date().toISOString();save();}
+  tick();
+
+  const btn=document.getElementById("finishBtn");
+  const msg=document.getElementById("submitMsg");
+  btn.disabled=true; msg.textContent="Saving…";
+
+  if(!WEB_APP_URL || WEB_APP_URL.includes("PASTE_WEB_APP_URL_HERE")){
+    msg.textContent="Google Sheet endpoint is not configured yet. Your work is safe in this browser; use Export backup.";
+    btn.disabled=false; return;
+  }
+
+  const payload=buildPayload();
+  try{
+    const res=await fetch(WEB_APP_URL,{
+      method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify(payload),
+      redirect:"follow"
+    });
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    let txt=await res.text();
+    msg.textContent="Saved to Google Sheet ✓  You may also export a backup.";
+  }catch(err){
+    try{
+      await fetch(WEB_APP_URL,{
+        method:"POST", mode:"no-cors",
+        headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body:JSON.stringify(payload)
+      });
+      msg.textContent="Save request sent. Because the browser could not verify the response, please export a backup too.";
+    }catch(err2){
+      msg.textContent="Could not reach Google Sheet. Your work is still saved locally; please export the backup file.";
+    }
+  }finally{btn.disabled=false;}
+}
+
+function downloadJSON(){
+  const payload=buildPayload();
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=`english-upgrade-${LESSON.id.toLowerCase()}-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+
+init();
+</script>
+</body>
+</html>
